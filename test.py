@@ -1,8 +1,10 @@
 from PIL import Image
 import argparse
 import numpy as np
+from sympy import Matrix
 
-from svd_0.py import svd
+from versions.svd_0 import svd
+#from versions.svd_1 import svd
 
 def image_compression(path: str, rank: int):
     image = Image.open(path)
