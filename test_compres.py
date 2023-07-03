@@ -1,7 +1,7 @@
+#An actual test with compression.
 from PIL import Image
 import argparse
 import numpy as np
-from sympy import Matrix
 
 from versions.svd_0 import svd
 #from versions.svd_1 import svd
