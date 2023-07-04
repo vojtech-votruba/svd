@@ -1,6 +1,5 @@
 '''With this implementation I decided to make SVD much faster. 
 The theoretical basis for this version was taken from this wikipedia article: https://en.wikipedia.org/wiki/Singular_value_decomposition'''
-from copy import deepcopy
 import numpy as np
 from scipy import linalg #For this version, I use scipy because it has LU decomp. function
 
