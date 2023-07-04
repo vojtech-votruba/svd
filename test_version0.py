@@ -1,27 +1,21 @@
 #A no-compression test on how fast the SVD algorithm runs.
 
-from PIL import Image
+import cv2
 import argparse
-import numpy as np
 
 from versions.svd_0 import svd
-#from versions.svd_1 import svd
 
 def image_compression(path: str):
-    image = Image.open(path)
-    img_arr = np.array(image)
-    print(image.size)
-    img_arr_decomposed = [img_arr[:,:,0], img_arr[:,:,1], img_arr[:,:,2]]
+    img = cv2.imread(path)
+    img_arr_decomposed = list(cv2.split(img))
 
     for seq,each in enumerate(img_arr_decomposed):
         U, Sigma, V_hermit = svd(each)
-        result = np.matmul(np.matmul(U,Sigma),V_hermit)    
-        img_arr[:,:,seq] = result
+        result = U @ Sigma @ V_hermit    
+        img_arr_decomposed[seq] = result
 
-    output = Image.fromarray(img_arr)
-    output.save("output.png")
-
-
+    output = (cv2.merge(img_arr_decomposed))
+    cv2.imwrite("output.png", output)
 
 def main():
     parser = argparse.ArgumentParser(description="A small implementation of SVD compression.")

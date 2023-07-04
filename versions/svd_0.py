@@ -1,5 +1,5 @@
-'''This implementation is the one we used in our LA class to manualy calculate SVD.
-It is extremly slow, but I wanted to put it here as it is a good demonstration of how the algorithm works'''
+'''This implementation is the one we used in our LA class (MFF UK, 2022/2023 LS) to manualy calculate SVD.
+It is extremly slow, but I wanted to put it here as it is a good demonstration of how the decomposition works'''
 
 import numpy as np
 from sympy import Matrix #We are using Sympy because it doesn't use svd to calculte nullspace https://github.com/sympy/sympy/blob/master/sympy/matrices/subspaces.py
@@ -8,7 +8,7 @@ epsilon = 1E-7
 #Simple algorithm to return SVD terms of A = U \Sigma V*
 def svd(A_matrix):
 
-    A_star_A = np.matmul(A_matrix.T, A_matrix) #Matrix of a form A*A
+    A_star_A = A_matrix.T @ A_matrix #Matrix of a form A*A
     eigenvalues, V_matrix = np.linalg.eigh(A_star_A) 
 
     ind = np.argsort(eigenvalues)
@@ -21,7 +21,7 @@ def svd(A_matrix):
             nonzero_eigen.append(lambda_value)
     singl_values = np.sqrt(nonzero_eigen) #Calculating singular values
 
-    U_matrix = np.column_stack([np.matmul(A_matrix, V_matrix[:,seq])/value for seq,value in enumerate(singl_values)])  
+    U_matrix = np.column_stack([A_matrix @ V_matrix[:,seq]/value for seq,value in enumerate(singl_values)])  
     U_sympy = Matrix(U_matrix.T)
     complement =  np.array(U_sympy.nullspace())
     for i in range(complement.shape[0]):
